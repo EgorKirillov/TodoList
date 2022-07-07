@@ -28,28 +28,23 @@ export type TasksStateType = {
 function App() {
    
    function removeTask(id: string, todolistId: string) {
-      let action=removeTaskAC(id,todolistId)
-      dispatchToTasks(action)
+      dispatchToTasks(removeTaskAC(id,todolistId))
    }
    
    function addTask(title: string, todolistId: string) {
-      let action=addTaskAC(title,todolistId)
-      dispatchToTasks(action)
+      dispatchToTasks(addTaskAC(title,todolistId))
    }
    
    function changeStatus(id: string, isDone: boolean, todolistId: string) {
-      let action=changeTaskStatusAC(id,isDone,todolistId)
-      dispatchToTasks(action)
+      dispatchToTasks(changeTaskStatusAC(id,isDone,todolistId))
    }
    
    function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-      let action=changeTaskTitleAC(id,newTitle,todolistId)
-      dispatchToTasks(action)
+      dispatchToTasks(changeTaskTitleAC(id,newTitle,todolistId))
    }
    
    function changeFilter(value: FilterValuesType, todolistId: string) {
-      let action=changeTodolistFilterAC(todolistId,value)
-      dispatchToTodoList(action)
+      dispatchToTodoList(changeTodolistFilterAC(todolistId,value))
    }
    
    function removeTodolist(id: string) {
@@ -59,8 +54,7 @@ function App() {
    }
    
    function changeTodolistTitle(id: string, title: string) {
-      let action=changeTodolistTitleAC(id,title)
-      dispatchToTodoList(action)
+      dispatchToTodoList(changeTodolistTitleAC(id,title))
    }
    
    function addTodolist(title: string) {
