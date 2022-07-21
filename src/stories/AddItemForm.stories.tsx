@@ -18,9 +18,8 @@ export default {
 
 const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;  // образец компоненты
 
-export const AddItemFormStory = Template.bind({});  // первая история
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+export const AddItemFormStory = Template.bind({});
 AddItemFormStory.args = {
-   addItem: action("clicked inside form"),
+   addItem: action("clicked add"),
    
 };

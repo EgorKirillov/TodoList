@@ -12,7 +12,7 @@ type TaskPropsType = {
 }
 
 export const Task = memo(({task,removeTask,changeTaskStatus,changeTaskTitle}:TaskPropsType) => {
-   console.log("task")
+   //console.log("task")
    const onClickHandler = () => removeTask(task.id )
    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       let newIsDoneValue = e.currentTarget.checked;

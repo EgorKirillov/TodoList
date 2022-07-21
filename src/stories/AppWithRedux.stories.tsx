@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
-import {action} from "@storybook/addon-actions"
-import {Task} from '../state/Task';
+import React from 'react';
+import {ComponentMeta, ComponentStory} from '@storybook/react';
 import AppWithRedux from "../AppWithRedux";
-import {Provider} from "react-redux";
-import {store} from "../state/store";
 import {ReduxStoreProviderDecorator} from "../state/ReduxStoreProviderDecorator";
 
 
@@ -17,7 +13,7 @@ export default {
    }
    
    
-} as ComponentMeta<typeof Task>;
+} as ComponentMeta<typeof AppWithRedux>;
 
 
 const Template: ComponentStory<typeof AppWithRedux> = (args) => <AppWithRedux/>
