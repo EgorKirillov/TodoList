@@ -8,15 +8,15 @@ export default {
 type TaskType = {
     description: string
     title: string
-    completed: boolean
+    //completed: boolean
     status: number
     priority: number
-    startDate: Date
-    deadline: Date
+    startDate: string
+    deadline: string
     id: string
     todoListId: string
     order: number
-    addedDate: Date
+    addedDate: string
 }
 type GetTaskResponseType = {
     items: Array<TaskType>
@@ -37,8 +37,8 @@ const settings = {
     },
 }
 
-const todolistID="10312211-647b-4cc5-9263-5c40087a1402"
-const taskID="592f63a5-1d49-49fc-b166-8a79d5796b92"
+const todolistID="7c42c7f2-1cf9-4498-a016-71e28ab1d713"
+const taskID="28df0d0d-d975-4978-a3bd-3e4964cce3e2"
 
 export const GetTasks = () => {
     const [state, setState] = useState<any>(null)
@@ -47,12 +47,21 @@ export const GetTasks = () => {
             .then((res) => {
                 setState(res.data);
             })
-
-
-
     }, [])
 
-    return <div> {JSON.stringify(state)}</div>
+    return <div> {JSON.stringify(state)}
+        {state && state.items && state.items.map((t: TaskType) => {
+            return <>
+                <div> <hr/> </div>
+                <div>title: {t.title}</div>
+                <div>id: {t.id}</div>
+                <div>Data: {t.addedDate}</div>
+                <div>complited?: {t.status ? "true" : "false"} </div>
+                <div> <hr/> </div>
+            </>
+        })}
+
+       </div>
 }
 export const CreateTask = () => {
     const [state, setState] = useState<any>(null)
@@ -80,6 +89,30 @@ export const UpdateTaskTitle = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
         axios.put<TaskResponseType<{ item: TaskType }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistID}/tasks/${taskID}`, {title: 'REACT==========>>>>>>>>>'}, settings)
+            .then((res) => {
+                setState(res.data)
+            })
+
+    }, [])
+
+    return <div> {JSON.stringify(state)}</div>
+}
+export const UpdateTaskStatusOnTrue = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(() => {
+        axios.put<TaskResponseType<{ item: TaskType }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistID}/tasks/${taskID}`, {title: 'REACT change status', status: true }, settings)
+            .then((res) => {
+                setState(res.data)
+            })
+
+    }, [])
+
+    return <div> {JSON.stringify(state)}</div>
+}
+export const UpdateTaskStatusOnFalse = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(() => {
+        axios.put<TaskResponseType<{ item: TaskType }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistID}/tasks/${taskID}`, {title: 'REACT change status', completed: false }, settings)
             .then((res) => {
                 setState(res.data)
             })

@@ -3,7 +3,7 @@ import axios from 'axios'
 type TaskType = {
     description: string
     title: string
-    completed: boolean
+    //completed: boolean
     status: number
     priority: number
     startDate: Date
