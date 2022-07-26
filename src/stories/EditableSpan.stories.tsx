@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 
-import { EditableSpan } from '../EditableSpan';
+import { EditableSpan } from '../components/EditableSpan';
 import {action} from "@storybook/addon-actions";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

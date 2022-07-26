@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import './App.css';
+import '../App.css';
 import {TaskType, Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import {AppBar, IconButton, Typography, Button, Toolbar, Container, Grid, Paper} from '@material-ui/core';
@@ -8,9 +8,9 @@ import {
    changeTodolistFilterAC,
    removeTodolistAC,
    changeTodolistTitleAC, addTodolistAC
-} from "./state/todolists-reducer";
-import {removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTitleAC} from './state/tasks-reducer';
-import {AppRootStateType} from "./state/store";
+} from "../state/todolists-reducer";
+import {removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskTitleAC} from '../state/tasks-reducer';
+import {AppRootStateType} from "../state/store";
 import {useDispatch, useSelector} from "react-redux";
 
 export type FilterValuesType = "all" | "active" | "completed";

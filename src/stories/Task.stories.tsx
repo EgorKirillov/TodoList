@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions"
-import {Task} from '../state/Task';
+import {Task} from '../oldVersionApp/Task';
 
 
 export default {
