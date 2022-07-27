@@ -1,16 +1,12 @@
 import React from 'react';
-import {FilterValuesType} from '../oldVersionApp/App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, List} from "@material-ui/core"
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import {Task1} from "./Task1";
+import {TaskStatuses, TaskType} from "../api/00_task-api";
+import {FilterValuesType} from "../state/todolists-reducer";
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
 
 type PropsType = {
     id: string
@@ -19,7 +15,7 @@ type PropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
-    changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
+    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
@@ -44,10 +40,10 @@ export const Todolist = React.memo((props: PropsType) => {
     
     let tasksForTodolist = props.tasks
     if (props.filter === "active") {
-        tasksForTodolist = tasksForTodolist.filter(t => !t.isDone);
+        tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.New);
     }
     if (props.filter === "completed") {
-        tasksForTodolist = tasksForTodolist.filter(t => t.isDone);
+        tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.Complited);
     }
     
     return <div>

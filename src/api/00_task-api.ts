@@ -1,17 +1,21 @@
 import axios from 'axios'
 
+export enum TaskStatuses { New, InProgress, Complited, Draft,}
+
+export enum TaskPriorities {Low, Middle, Hi, Urgently, Later}
+
 export type TaskType = {
     description: string
     title: string
     //completed: boolean
-    status: number
-    priority: number
-    startDate: Date
-    deadline: Date
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string //Date
+    deadline: string //Date
     id: string
     todoListId: string
     order: number
-    addedDate: Date
+    addedDate: string //Date
 }
 type GetTaskResponseType = {
     items: Array<TaskType>

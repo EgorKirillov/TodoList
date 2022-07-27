@@ -3,7 +3,7 @@ import axios from 'axios'
 export type TodolistType = {
     id: string
     addedDate: string
-    order: number
+    order: number // для возможности перетаскивания
     title: string
 }
 
@@ -35,6 +35,6 @@ export const todolistAPI = {
     updateTodolist(todolistId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title: title})
     }
-
-
+    
+    
 }
