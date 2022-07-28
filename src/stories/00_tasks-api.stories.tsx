@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import {taskAPI, TaskType} from "../api/00_task-api";
+import {taskAPI, TaskPriorities, TaskStatuses, TaskType} from "../api/00_task-api";
 
 export default {
     title: 'API/Tasks00'
 }
 
-const todolistID = "ba3db19b-c28f-4e07-8c16-c02b21dca9cc"
+const todolistID = "44ad9c16-b040-443d-aa20-ddb65fd230e5"
 const taskID = "9264c786-ff32-4f87-bfa8-0f5afa4f5e74" // for change title
 const newTaskTitle = "new task sec" + String(new Date().getSeconds())
 
@@ -56,7 +56,18 @@ export const DeleteTask = () => {
 export const UpdateTaskTitle = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        taskAPI.updateTask(todolistID, taskID, newTaskTitle)
+        const newTask={ description: "",
+            title: newTaskTitle,
+            //completed: boolean,
+            status: 0,
+            priority: 0,
+            startDate: "",
+            deadline: "",
+            id: taskID,
+            todoListId: todolistID,
+            order: 0,
+            addedDate: ""}
+        taskAPI.updateTask(todolistID, taskID, newTask) //
             .then((res) => {
                 setState(res.data)
             })

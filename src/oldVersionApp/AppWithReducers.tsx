@@ -15,11 +15,7 @@ import {removeTaskAC, tasksReducer, addTaskAC, changeTaskStatusAC, changeTaskTit
 import {TaskPriorities, TaskStatuses, TaskType} from "../api/00_task-api";
 
 
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType;
-}
+
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -33,7 +29,8 @@ function App() {
     }
     
     function addTask(title: string, todolistId: string) {
-        dispatchToTasks(addTaskAC(title, todolistId))
+        const newTask = {}
+        dispatchToTasks(addTaskAC({title:title} as TaskType, todolistId))
     }
     
     function changeStatus(id: string, status: TaskStatuses, todolistId: string) {
@@ -170,10 +167,10 @@ function App() {
                                     id={tl.id}
                                     title={tl.title}
                                     tasks={tasksForTodolist}
-                                    removeTask={removeTask}
+                                    //removeTask={removeTask} // new version Task use useDispatch
                                     changeFilter={changeFilter}
                                     addTask={addTask}
-                                    changeTaskStatus={changeStatus}
+                                    //changeTaskStatus={changeStatus}
                                     filter={tl.filter}
                                     removeTodolist={removeTodolist}
                                     changeTaskTitle={changeTaskTitle}

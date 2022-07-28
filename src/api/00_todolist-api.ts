@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export type TodolistType = {
+export type TodolistType = { // type from server
     id: string
     addedDate: string
     order: number // для возможности перетаскивания

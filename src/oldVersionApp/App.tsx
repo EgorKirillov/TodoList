@@ -203,10 +203,10 @@ function App() {
                                     id={tl.id}
                                     title={tl.title}
                                     tasks={tasksForTodolist}
-                                    removeTask={removeTask}
+                                    //removeTask={removeTask} // new version Task use useDispatch
                                     changeFilter={changeFilter}
                                     addTask={addTask}
-                                    changeTaskStatus={changeStatus}
+                                    //changeTaskStatus={changeStatus}
                                     filter={tl.filter}
                                     removeTodolist={removeTodolist}
                                     changeTaskTitle={changeTaskTitle}
