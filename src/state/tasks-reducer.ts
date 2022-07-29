@@ -9,7 +9,6 @@ export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
 export type changeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 export type SetTasksActionType = ReturnType<typeof setTasksAC>
 
-
 export type TasksActionsType =
     RemoveTaskActionType
     | AddTaskActionType
@@ -121,6 +120,7 @@ export const addTasksTC = (todolistID: string, title: string) => async (dispatch
     dispatch(addTaskAC(newTask, todolistID))
     
 }
+
 export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
         // find task by id
@@ -143,6 +143,7 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
         }
     }
 }
+
 export const updateTaskTitleTC = (taskId: string, todolistId: string, title: string) => {
     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
         // find task by id
