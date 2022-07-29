@@ -19,7 +19,7 @@ type PropsType = {
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
-    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+   // changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
 }
 
 export const Todolist = React.memo((props: PropsType) => {
@@ -49,7 +49,7 @@ export const Todolist = React.memo((props: PropsType) => {
     }
     useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    }, [dispatch])
+    }, [props.id])
     
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
