@@ -7,11 +7,10 @@ import Menu from '@material-ui/icons/Add';
 import {
     changeTodolistFilterAC,
     removeTodolistAC,
-    changeTodolistTitleAC,
     addTodolistAC,
     FilterValuesType,
     TodoListDomainType,
-    fetchTodolistsTC
+    fetchTodolistsTC, changeTodolistsTitleTC
 } from "../state/todolists-reducer";
 import {changeTaskTitleAC, addTasksTC,} from '../state/tasks-reducer';
 import {AppRootStateType} from "../state/store";
@@ -46,7 +45,7 @@ function App() {
     }, [dispatch])
     
     const changeTodolistTitle = useCallback((id: string, title: string) => {
-        dispatch(changeTodolistTitleAC(id, title))
+        dispatch(changeTodolistsTitleTC(id, title))
     }, [dispatch])
     
     const addTodolist = useCallback((title: string) => {

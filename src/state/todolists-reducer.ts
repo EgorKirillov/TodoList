@@ -1,7 +1,7 @@
 import {v1} from 'uuid';
 import {todolistAPI, TodolistType} from "../api/00_todolist-api";
 import {Dispatch} from "redux";
-import {AppActionType, AppDispatch} from "./store";
+import {AppActionType} from "./store";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -87,4 +87,10 @@ export const fetchTodolistsTC = () => (dispatch: Dispatch<AppActionType>) => { /
         .then((res) => {
             dispatch(setTodolistAC(res.data))
         })
+}
+export const changeTodolistsTitleTC = (todolistId:string, title:string) => async (dispatch: Dispatch<AppActionType>) => { //fetch - принести, получать, привести
+    const res = await todolistAPI.updateTodolistTitle(todolistId,title)
+    if (res.data.resultCode === 0) {
+        dispatch(changeTodolistTitleAC(todolistId, title))
+    }
 }
