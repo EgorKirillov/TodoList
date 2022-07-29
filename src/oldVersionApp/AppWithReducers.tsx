@@ -14,7 +14,6 @@ import {
 import {tasksReducer, addTaskAC} from '../state/tasks-reducer';
 import {TaskPriorities, TaskStatuses, TaskType} from "../api/00_task-api";
 
-
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }

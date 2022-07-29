@@ -7,7 +7,7 @@ import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "../api/00_task-api";
 import {FilterValuesType} from "../state/todolists-reducer";
 import {fetchTasksTC} from "../state/tasks-reducer";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../app/hooks";
 
 
 type PropsType = {
@@ -23,7 +23,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-    const dispatch = useDispatch<any>()
+    const dispatch = useAppDispatch()
 
     const addTask = (title: string) => {
         props.addTask(title, props.id);
@@ -49,7 +49,7 @@ export const Todolist = React.memo((props: PropsType) => {
     }
     useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    }, [props.id])
+    }, [dispatch,props.id])
     
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>

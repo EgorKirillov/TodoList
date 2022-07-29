@@ -2,9 +2,9 @@ import React, {ChangeEvent, memo} from 'react';
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import {useDispatch} from "react-redux";
 import {removeTasksTC, updateTaskStatusTC, updateTaskTitleTC} from "../state/tasks-reducer";
 import {TaskStatuses, TaskType} from "../api/00_task-api";
+import {useAppDispatch} from "../app/hooks";
 
 type TaskPropsType = {
     task: TaskType
@@ -13,7 +13,7 @@ type TaskPropsType = {
 
 export const Task = memo(({task, todolistID}: TaskPropsType) => {
     
-    const dispatch = useDispatch<any>()
+    const dispatch = useAppDispatch()
     
     const onClickHandler = () => dispatch(removeTasksTC(task.id, todolistID))
     
