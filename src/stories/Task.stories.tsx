@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions"
-import {Task} from '../oldVersionApp/Task';
 import {TaskPriorities, TaskStatuses} from "../api/00_task-api";
+import { Task } from '../components/Task';
 
 
 export default {
@@ -102,8 +102,8 @@ const Template2: ComponentStory<typeof Task> = (args) => {
         })
     }
     
-    return <Task task={task} removeTask={removeTask} changeTaskStatus={changeTaskStatus}
-                 changeTaskTitle={changeTaskTitle}/>;
+    return <Task task={task}
+                 todolistID={"todolistId1"}/>;
 }
 
 
