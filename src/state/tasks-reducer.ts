@@ -104,26 +104,22 @@ export const changeTaskTitleAC = (taskID: string, title: string, todolistID: str
 export const setTasksAC = (tasks: TaskType[], todolistID: string) => {
     return {type: 'SET-TASKS', tasks, todolistID} as const
 }
-export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
-    taskAPI.getTasks(todolistId)
-        .then((res) => {
-            const tasks = res.data.items
-            dispatch(setTasksAC(tasks, todolistId))
-        })
+export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
+    const res = await taskAPI.getTasks(todolistId)
+    const tasks:TaskType[] = res.data.items
+    dispatch(setTasksAC(tasks, todolistId))
 }
 
-export const removeTasksTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
-    taskAPI.deleteTask(taskId, todolistId)
-        .then((res) => {
-            dispatch(removeTaskAC(taskId, todolistId))
-        })
+export const removeTasksTC = (taskId: string, todolistId: string) => async (dispatch: Dispatch) => {
+    await taskAPI.deleteTask(taskId, todolistId)
+    dispatch(removeTaskAC(taskId, todolistId))
 }
-export const addTasksTC = (todolistID: string, title: string) => (dispatch: Dispatch) => {
-    taskAPI.createTask(todolistID, title)
-        .then((res) => {
-            const newTask: TaskType = res.data.data.item
-            dispatch(addTaskAC(newTask, todolistID))
-        })
+
+export const addTasksTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
+    const res = await taskAPI.createTask(todolistID, title)
+    const newTask: TaskType = res.data.data.item
+    dispatch(addTaskAC(newTask, todolistID))
+    
 }
 export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
@@ -155,7 +151,7 @@ export const updateTaskTitleTC = (taskId: string, todolistId: string, title: str
         })
         if (task) {
             //create a task using api example
-            const updatedTask:UpdateTaskModelType = {
+            const updatedTask: UpdateTaskModelType = {
                 title: title,
                 description: task.description,
                 status: task.status,

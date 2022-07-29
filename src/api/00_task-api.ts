@@ -7,7 +7,6 @@ export enum TaskPriorities {Low, Middle, Hi, Urgently, Later}
 export type TaskType = {
     description: string
     title: string
-    //completed: boolean
     status: TaskStatuses
     priority: TaskPriorities
     startDate: string //Date
@@ -52,7 +51,7 @@ export const taskAPI = {
     createTask(todolistID: string, title: string) {
         return instance.post<TaskResponseType>(`todo-lists/${todolistID}/tasks`, {title: title})
     },
-    deleteTask(taskID: string, todolistId: string ) {
+    deleteTask(taskID: string, todolistId: string) {
         return instance.delete<TaskResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskID}`)
     },
     updateTask(todolistId: string, taskID: string, task: UpdateTaskModelType) {
@@ -60,14 +59,12 @@ export const taskAPI = {
     },
     changeTaskStatusTrue(todolistId: string, taskID: string, title: string) {
         return instance.put<TaskResponseType>(`todo-lists/${todolistId}/tasks/${taskID}`, {
-            title: title,
-            status: true
+            title: title, status: true
         })
     },
     changeTaskStatusFalse(todolistId: string, taskID: string, title: string) {
         return instance.put<TaskResponseType>(`todo-lists/${todolistId}/tasks/${taskID}`, {
-            title: title,
-            status: false
+            title: title, status: false
         })
     }
 }
