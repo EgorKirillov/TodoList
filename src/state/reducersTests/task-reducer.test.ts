@@ -1,7 +1,8 @@
 import {TasksStateType} from '../../oldVersionApp/App';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from '../tasks-reducer';
+import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../tasks-reducer';
 import {addTodolistAC} from "../todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/00_task-api";
+import {createUpdatedTask} from "../../utils/utils";
 
 let startState: TasksStateType
 
@@ -185,7 +186,21 @@ test('correct task should be added to correct array', () => {
 
 test('status of specified task should be changed', () => {
     
-    const action = changeTaskStatusAC('2', TaskStatuses.New, 'todolistId2')
+    const updatedTask = createUpdatedTask({
+        id: '2',
+        title: 'milk',
+        status: TaskStatuses.Complited,
+        description: "",
+        order: 0,
+        addedDate: "",
+        deadline: "",
+        startDate: "",
+        todoListId: 'todolistId2',
+        priority: TaskPriorities.Low
+    })
+    updatedTask.status = TaskStatuses.New
+    const action = updateTaskAC('2', updatedTask, 'todolistId2')
+    
     const endState = tasksReducer(startState, action)
     
     expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
@@ -194,12 +209,39 @@ test('status of specified task should be changed', () => {
 
 test('title of specified task should be changed', () => {
     
-    let endState = tasksReducer(startState, changeTaskTitleAC('2', 'beer', 'todolistId2'))
+    const updatedTask = createUpdatedTask({
+        id: '2',
+        title: 'milk',
+        status: TaskStatuses.Complited,
+        description: "",
+        order: 0,
+        addedDate: "",
+        deadline: "",
+        startDate: "",
+        todoListId: 'todolistId2',
+        priority: TaskPriorities.Low
+    })
+    updatedTask.title = 'beer'
+    
+    let endState = tasksReducer(startState, updateTaskAC('2', updatedTask, 'todolistId2'))
     
     expect(endState['todolistId2'][1].title).toBe('beer')
     expect(endState['todolistId1'][1].title).toBe('JS')
     
-    endState = tasksReducer(startState, changeTaskTitleAC('3', 'Ract-Redux', 'todolistId1'))
+    const updatedTask1 = createUpdatedTask({
+        id: '3',
+        title: 'React',
+        status: TaskStatuses.New,
+        description: "",
+        order: 0,
+        addedDate: "",
+        deadline: "",
+        startDate: "",
+        todoListId: 'todolistId1',
+        priority: TaskPriorities.Low
+    })
+    updatedTask1.title = 'Ract-Redux'
+    endState = tasksReducer(startState, updateTaskAC('3', updatedTask1, 'todolistId1'))
     
     expect(endState['todolistId1'][2].title).toBe('Ract-Redux')
     expect(endState['todolistId2'][2].title).toBe('tea')

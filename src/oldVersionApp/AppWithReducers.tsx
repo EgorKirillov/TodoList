@@ -150,12 +150,12 @@ function App() {
                                     
                                     id={tl.id}
                                     title={tl.title}
-                                    tasks={tasksForTodolist}
-                                    changeFilter={changeFilter}
-                                    addTask={addTask}
+                                    //tasks={tasksForTodolist}
+                                    //changeFilter={changeFilter} // new version Todolist use useDispatch
+                                    //addTask={addTask}  // new version Todolist use useDispatch
                                     filter={tl.filter}
-                                    removeTodolist={removeTodolist}
-                                    changeTodolistTitle={changeTodolistTitle}
+                                    //removeTodolist={removeTodolist} // // new version Todolist use useDispatch
+                                   // changeTodolistTitle={changeTodolistTitle} // new version Todolist use useDispatch
                                 /></Paper>
                             </Grid>)
                     })}

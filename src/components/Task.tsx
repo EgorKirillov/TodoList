@@ -15,13 +15,16 @@ export const Task = memo(({task, todolistID}: TaskPropsType) => {
     
     const dispatch = useAppDispatch()
     
+    //удаление Task
     const onClickHandler = () => dispatch(removeTasksTC(task.id, todolistID))
     
+    //изменение status
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newStatus = e.currentTarget.checked ? TaskStatuses.Complited : TaskStatuses.New;
         dispatch(updateTaskStatusTC(task.id, todolistID, newStatus));
     }
     
+    //изменение Title
     const onTitleChangeHandler = (newTitle: string) => {
         dispatch(updateTaskTitleTC(task.id, todolistID, newTitle));
     }
