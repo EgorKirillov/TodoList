@@ -3,6 +3,7 @@ import {TodolistsActionsType, todolistsReducer} from './todolists-reducer'
 import {applyMiddleware, combineReducers, compose, legacy_createStore as createStore} from 'redux'
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {useDispatch} from "react-redux";
+import {appReducer, AppStatusActionsType} from "./app-reducer";
 
 // необходимо для работы расширения Redux
 declare global {
@@ -17,7 +18,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistsReducer
+    todolists: todolistsReducer,
+    app: appReducer,
 })
 
 // непосредственно создаём store
@@ -32,7 +34,7 @@ export const store = createStore( // export const store = legacy_createStore(
 export type AppRootStateType = ReturnType<typeof store.getState> // после типизации Dispatch
 
 //общий тип для все Action
-export type AppActionType = TodolistsActionsType | TasksActionsType
+export type AppActionType = TodolistsActionsType | TasksActionsType | AppStatusActionsType
 
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionType>;
 

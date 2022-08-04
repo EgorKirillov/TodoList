@@ -3,6 +3,7 @@ import {AddTodolistActionType} from "./todolists-reducer";
 import {AppActionType, AppRootStateType} from "./store";
 import {Dispatch} from 'redux';
 import {createUpdatedTask} from '../utils/utils';
+import {setAppStatusAC} from "./app-reducer";
 
 //types
 export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
@@ -75,18 +76,24 @@ export const updateTaskAC = (taskId: string, taskModel: UpdateTaskModelType, tod
 
 // thunk creators
 export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     const res = await taskAPI.getTasks(todolistId)
     const tasks: TaskType[] = res.data.items
     dispatch(setTasksAC(tasks, todolistId))
+    dispatch(setAppStatusAC("succeeded"))
 }
 export const removeTasksTC = (taskId: string, todolistId: string) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     await taskAPI.deleteTask(taskId, todolistId)
     dispatch(removeTaskAC(taskId, todolistId))
+    dispatch(setAppStatusAC("succeeded"))
 }
 export const addTasksTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     const res = await taskAPI.createTask(todolistID, title)
     const newTask: TaskType = res.data.data.item
     dispatch(addTaskAC(newTask, todolistID))
+    dispatch(setAppStatusAC("succeeded"))
     
 }
 export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
@@ -99,8 +106,10 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
             //create a task using api example
             const updatedTask = createUpdatedTask(task)
             updatedTask.status = status
+            dispatch(setAppStatusAC("loading"))
             taskAPI.updateTask(todolistId, taskId, updatedTask).then(() => {
                 dispatch(updateTaskAC(taskId, updatedTask, todolistId))
+                dispatch(setAppStatusAC("succeeded"))
             })
         }
     }
@@ -115,8 +124,10 @@ export const updateTaskTitleTC = (taskId: string, todolistId: string, title: str
             //create a task using api example
             const updatedTask = createUpdatedTask(task)
             updatedTask.title = title
+            dispatch(setAppStatusAC("loading"))
             taskAPI.updateTask(todolistId, taskId, updatedTask).then(() => {
                 dispatch(updateTaskAC(taskId,updatedTask, todolistId))
+                dispatch(setAppStatusAC("succeeded"))
             })
         }
     }

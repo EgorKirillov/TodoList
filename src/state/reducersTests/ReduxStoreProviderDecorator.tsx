@@ -71,7 +71,8 @@ const initialGlobalState = {
                 priority: TaskPriorities.Low
             }
         ]
-    }
+    },
+    app:{status:"loading"}
 }
 
 export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType)
