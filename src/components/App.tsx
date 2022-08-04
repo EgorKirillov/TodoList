@@ -51,7 +51,7 @@ function App() {
             <Container fixed={true}>
                 <Grid container
                       style={{padding: "15px 0"}}>
-                    <AddItemForm addItem={addTodolist}/>
+                    <AddItemForm addItem={addTodolist} disabled={false}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {todolists.map(tl => {

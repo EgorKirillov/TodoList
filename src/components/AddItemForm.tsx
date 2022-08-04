@@ -4,6 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
@@ -30,6 +31,8 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
             addItem();
         }
     }
+    const iconColor = props.disabled ? "disabled" :"inherit"
+    const buttonColor = props.disabled ? "grey" :"deeppink"
     
     return <div>
         <TextField size={"small"}
@@ -41,8 +44,9 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
                    className={error ? "error" : ""}
                    error={!!error}
                    helperText={error && "Title required"}
+                   disabled={props.disabled}
         />
-        <Button onClick={addItem} style={{color: "deeppink"}}><AddIcon fontSize={"small"} color={"inherit"}/></Button>
+        <Button onClick={addItem} disabled={props.disabled} style={{color: buttonColor}}><AddIcon fontSize={"small"} color={iconColor} />add</Button>
         
         {/*{error && <div className="error-message">{error}</div>}*/}
     </div>
