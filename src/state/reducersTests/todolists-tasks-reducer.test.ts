@@ -1,4 +1,4 @@
-import {TasksStateType} from "../../oldVersionApp/App"
+import {TasksStateType} from "../../oldVersionApp/AppWithLocalState"
 import {addTodolistAC, removeTodolistAC, TodoListDomainType, todolistsReducer} from "../todolists-reducer";
 import {tasksReducer} from "../tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "../../api/00_task-api";

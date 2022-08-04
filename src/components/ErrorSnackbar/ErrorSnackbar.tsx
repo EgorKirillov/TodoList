@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useSelector} from "react-redux";
@@ -22,13 +22,6 @@ export function ErrorSnackbar() {
         dispatch(setAppErrorAC(null))
         setOpen(false);
     };
-    
-    useEffect(() => {
-        setTimeout(() => {
-            console.log("useEffect")
-            dispatch(setAppErrorAC(null))
-        }, 4000)
-    }, [dispatch, error])
     
     return (
         <Snackbar open={error !== null} autoHideDuration={6000} onClose={handleClose}>

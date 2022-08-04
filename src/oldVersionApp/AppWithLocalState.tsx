@@ -12,7 +12,7 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-function App() {
+function AppWithLocalState() {
     
     function addTask(title: string, todolistId: string) {
         let task: TaskType = {
@@ -55,11 +55,11 @@ function App() {
     let [todolists, setTodolists] = useState<Array<TodoListDomainType>>([
         {
             id: todolistId1, title: "What to learn", filter: "all", addedDate: "",
-            order: 0,
+            order: 0,entityStatus: "idle",
         },
         {
             id: todolistId2, title: "What to buy", filter: "all", addedDate: "",
-            order: 0,
+            order: 0,entityStatus: "idle",
         }
     ])
     
@@ -120,7 +120,7 @@ function App() {
     
     function addTodolist(title: string) {
         let newTodolistId = v1();
-        let newTodolist: TodoListDomainType = {id: newTodolistId, title: title, filter: 'all', order: 0, addedDate: ""};
+        let newTodolist: TodoListDomainType = {id: newTodolistId, title: title, filter: 'all', order: 0, addedDate: "",entityStatus: "idle"};
         setTodolists([newTodolist, ...todolists]);
         setTasks({
             ...tasks,
@@ -174,6 +174,7 @@ function App() {
                                     //addTask={addTask}   // new version Todolist use useDispatch
                                     //changeTaskStatus={changeStatus}
                                     filter={tl.filter}
+                                    entityStatus={tl.entityStatus}
                                     //removeTodolist={removeTodolist} // new version Todolist use useDispatch
                                 //    changeTaskTitle={changeTaskTitle}
                                     //changeTodolistTitle={changeTodolistTitle} // new version Todolist use useDispatch
@@ -186,4 +187,4 @@ function App() {
     );
 }
 
-export default App;
+export default AppWithLocalState;

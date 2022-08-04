@@ -19,7 +19,7 @@ export type TasksStateType = {
 }
 
 
-function App() {
+function AppWithReducers() {
     
     function addTask(title: string, todolistId: string) {
         dispatchToTasks(addTaskAC({title: title} as TaskType, todolistId))
@@ -49,8 +49,8 @@ function App() {
     let todolistId2 = v1();
     
     let [todolists, dispatchToTodoList] = useReducer(todolistsReducer, [
-        {id: todolistId1, title: "What to learn", filter: "all", order: 0, addedDate: ""},
-        {id: todolistId2, title: "What to buy", filter: "all", order: 0, addedDate: ""}
+        {id: todolistId1, title: "What to learn", filter: "all", order: 0, addedDate: "",entityStatus: "idle"},
+        {id: todolistId2, title: "What to buy", filter: "all", order: 0, addedDate: "",entityStatus: "idle"}
     ]);
     
     let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
@@ -154,6 +154,7 @@ function App() {
                                     //changeFilter={changeFilter} // new version Todolist use useDispatch
                                     //addTask={addTask}  // new version Todolist use useDispatch
                                     filter={tl.filter}
+                                    entityStatus={tl.entityStatus}
                                     //removeTodolist={removeTodolist} // // new version Todolist use useDispatch
                                    // changeTodolistTitle={changeTodolistTitle} // new version Todolist use useDispatch
                                 /></Paper>
@@ -165,4 +166,4 @@ function App() {
     );
 }
 
-export default App;
+export default AppWithReducers;
