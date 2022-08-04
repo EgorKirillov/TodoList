@@ -72,7 +72,11 @@ const initialGlobalState = {
             }
         ]
     },
-    app:{status:"loading"}
+    app:{
+        status:"loading",
+        error: ""
+    }
+    
 }
 
 export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType)

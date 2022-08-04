@@ -11,6 +11,7 @@ import {TaskType} from "../api/00_task-api";
 import {useAppDispatch} from "../app/hooks";
 import {LinearProgress} from '@mui/material';
 import {RequestStatusType} from "../state/app-reducer";
+import {ErrorSnackbar} from "./ErrorSnackbar/ErrorSnackbar";
 
 
 export type TasksStateType = {
@@ -31,8 +32,10 @@ function App() {
         dispatch(fetchTodolistsTC())
     }, [dispatch])
     
+    
     return (
         <div className="App">
+            <ErrorSnackbar />
             <AppBar position="static">
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge="start" color="inherit" aria-label="menu">
