@@ -90,15 +90,14 @@ export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) =
 }
 export const removeTasksTC = (taskId: string, todolistId: string) => async (dispatch: Dispatch) => {
     try {
-        //dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC("loading"))
         const res = await taskAPI.deleteTask(taskId, todolistId)
         if (res.data.resultCode === 0) {
             dispatch(removeTaskAC(taskId, todolistId))
             dispatch(setAppStatusAC("succeeded"))
+        } else {
+            handleServerAppError(res.data, dispatch)
         }
-        // else {
-        //    handleServerAppError(res.data, dispatch)
-        // }
     }
         
         // catch (e) {
@@ -197,7 +196,9 @@ export const updateTaskTitleTC = (taskId: string, todolistId: string, title: str
                 if (res.data.resultCode === 0) {
                     dispatch(updateTaskAC(taskId, updatedTask, todolistId))
                     dispatch(setAppStatusAC("succeeded"))
-                } else {}
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
             }).catch((e) => {
                 const err = e as AxiosError | Error
                 if (axios.isAxiosError(err)) {

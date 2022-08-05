@@ -2,7 +2,7 @@ import React from 'react';
 //import ReactDOM, { render } from 'react-dom';
 
 import './index.css';
-import App from './components/App';  // from "./AppWithReducers" or "./AppWithLocalState"
+import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 import {store} from "./state/store";
@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom/client'; // from React 18
 // from React 17
 // render(
 //   <Provider store={store}>
-//      <AppWithLocalState/>
+//      <App/>
 //   </Provider>,  document.getElementById('root'));
 
 
