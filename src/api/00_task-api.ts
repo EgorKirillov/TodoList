@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {ResponseType} from "./00_todolist-api";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -12,24 +13,15 @@ export const taskAPI = {
         return instance.get<GetTaskResponseType>(`todo-lists/${todolistID}/tasks`)
     },
     createTask(todolistID: string, title: string) {
-        return instance.post<TaskResponseType>(`todo-lists/${todolistID}/tasks`, {title: title})
+        return instance.post<ResponseType<{item:TaskType}>>(`todo-lists/${todolistID}/tasks`, {title: title})
     },
     deleteTask(taskID: string, todolistId: string) {
-        return instance.delete<TaskResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskID}`)
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskID}`)
     },
     updateTask(todolistId: string, taskID: string, task: UpdateTaskModelType) {
-        return instance.put<TaskResponseType>(`todo-lists/${todolistId}/tasks/${taskID}`, task)
+        return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskID}`, task)
     },
-    changeTaskStatusTrue(todolistId: string, taskID: string, title: string) {
-        return instance.put<TaskResponseType>(`todo-lists/${todolistId}/tasks/${taskID}`, {
-            title: title, status: true
-        })
-    },
-    changeTaskStatusFalse(todolistId: string, taskID: string, title: string) {
-        return instance.put<TaskResponseType>(`todo-lists/${todolistId}/tasks/${taskID}`, {
-            title: title, status: false
-        })
-    }
+   
 }
 // types
 export enum TaskStatuses { New, InProgress, Complited, Draft,}
@@ -59,9 +51,4 @@ type GetTaskResponseType = {
     items: Array<TaskType>
     totalCount: number
     error: string | null
-}
-export type TaskResponseType<D = { item: TaskType }> = {
-    resultCode: number
-    messages: Array<string>
-    data: D
 }

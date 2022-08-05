@@ -3,7 +3,9 @@ import {AddTodolistActionType} from "./todolists-reducer";
 import {AppActionType, AppRootStateType} from "./store";
 import {Dispatch} from 'redux';
 import {createUpdatedTask} from '../utils/utils';
-import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
+import {setAppStatusAC} from "./app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import axios, {AxiosError} from 'axios';
 
 //types
 export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
@@ -76,35 +78,74 @@ export const updateTaskAC = (taskId: string, taskModel: UpdateTaskModelType, tod
 
 // thunk creators
 export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC("loading"))
-    const res = await taskAPI.getTasks(todolistId)
-    const tasks: TaskType[] = res.data.items
-    dispatch(setTasksAC(tasks, todolistId))
-    dispatch(setAppStatusAC("succeeded"))
+    try {
+        dispatch(setAppStatusAC("loading"))
+        const res = await taskAPI.getTasks(todolistId)
+        const tasks: TaskType[] = res.data.items
+        dispatch(setTasksAC(tasks, todolistId))
+        dispatch(setAppStatusAC("succeeded"))
+    } catch (error) {
+        handleServerNetworkError(error as { message: string }, dispatch)
+    }
 }
 export const removeTasksTC = (taskId: string, todolistId: string) => async (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC("loading"))
-    await taskAPI.deleteTask(taskId, todolistId)
-    dispatch(removeTaskAC(taskId, todolistId))
-    dispatch(setAppStatusAC("succeeded"))
-}
-export const addTasksTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC("loading"))
     try {
+        //dispatch(setAppStatusAC("loading"))
+        const res = await taskAPI.deleteTask(taskId, todolistId)
+        if (res.data.resultCode === 0) {
+            dispatch(removeTaskAC(taskId, todolistId))
+            dispatch(setAppStatusAC("succeeded"))
+        }
+        // else {
+        //    handleServerAppError(res.data, dispatch)
+        // }
+    }
+        
+        // catch (e) {
+        //     let err = e as AxiosError | Error
+        //     if (axios.isAxiosError(err)) {
+        //         const error = err.response?.data
+        //             ? (err.response.data as ({ error: string })).error
+        //             : err.message
+        //         handleServerNetworkError({message: error}, dispatch)
+        //     }
+        //     handleServerNetworkError(err, dispatch)
+        // }
+    catch (error) {
+        handleServerNetworkError(error as { message: string }, dispatch)
+    }
+}
+
+export const addTasksTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
+    try {
+        dispatch(setAppStatusAC("loading"))
+        // make Error property of undefined, title<30
+        // let trt=title[30]
+        // let aa=trt.length
         const res = await taskAPI.createTask(todolistID, title)
         if (res.data.resultCode === 0) {
-            const newTask: TaskType = res.data.data.item
-            dispatch(addTaskAC(newTask, todolistID))
+            dispatch(addTaskAC(res.data.data.item, todolistID))
             dispatch(setAppStatusAC("succeeded"))
-        } else if (res.data.messages.length) {
-            dispatch(setAppErrorAC(res.data.messages[0]))
         } else {
-            dispatch(setAppErrorAC('Some error occurred'))
+            handleServerAppError(res.data, dispatch)
         }
-        dispatch(setAppStatusAC('failed'))
-    } catch (err) {
     }
-    
+        // one way  typing errors
+        // catch (e) {
+        //     let err = e as AxiosError | Error
+        //     if (axios.isAxiosError(err)) {
+        //         const error = err.response?.data
+        //             ? (err.response.data as ({ error: string })).error
+        //             : err.message
+        //         handleServerNetworkError({message: error}, dispatch)
+        //     }
+        //     handleServerNetworkError(err, dispatch)
+        // }
+        
+        //                 another way  typing errors
+    catch (error) {
+        handleServerNetworkError(error as { message: string }, dispatch)
+    }
     
 }
 export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
@@ -117,10 +158,25 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
             //create a task using api example
             const updatedTask = createUpdatedTask(task)
             updatedTask.status = status
+            
             dispatch(setAppStatusAC("loading"))
-            taskAPI.updateTask(todolistId, taskId, updatedTask).then(() => {
-                dispatch(updateTaskAC(taskId, updatedTask, todolistId))
-                dispatch(setAppStatusAC("succeeded"))
+            taskAPI.updateTask(todolistId, taskId, updatedTask).then((res) => {
+                if (res.data.resultCode === 0) {
+                    dispatch(updateTaskAC(taskId, updatedTask, todolistId))
+                    dispatch(setAppStatusAC("succeeded"))
+                } else {
+                    handleServerAppError(res.data, dispatch)
+                }
+            }).catch((e) => {
+                const err = e as AxiosError | Error
+                if (axios.isAxiosError(err)) {
+                    const error = err.response?.data
+                        ? (err.response.data as ({ error: string })).error
+                        : err.message
+                    handleServerNetworkError({message: error}, dispatch)
+                } else {
+                    handleServerNetworkError(err as Error, dispatch)
+                }
             })
         }
     }
@@ -135,10 +191,23 @@ export const updateTaskTitleTC = (taskId: string, todolistId: string, title: str
             //create a task using api example
             const updatedTask = createUpdatedTask(task)
             updatedTask.title = title
+            
             dispatch(setAppStatusAC("loading"))
-            taskAPI.updateTask(todolistId, taskId, updatedTask).then(() => {
-                dispatch(updateTaskAC(taskId, updatedTask, todolistId))
-                dispatch(setAppStatusAC("succeeded"))
+            taskAPI.updateTask(todolistId, taskId, updatedTask).then((res) => {
+                if (res.data.resultCode === 0) {
+                    dispatch(updateTaskAC(taskId, updatedTask, todolistId))
+                    dispatch(setAppStatusAC("succeeded"))
+                } else {}
+            }).catch((e) => {
+                const err = e as AxiosError | Error
+                if (axios.isAxiosError(err)) {
+                    const error = err.response?.data
+                        ? (err.response.data as ({ error: string })).error
+                        : err.message
+                    handleServerNetworkError({message: error}, dispatch)
+                } else {
+                    handleServerNetworkError(err as Error, dispatch)
+                }
             })
         }
     }
