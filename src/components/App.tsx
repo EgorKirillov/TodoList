@@ -1,41 +1,46 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import '../App.css';
-import {Todolist} from './Todolist';
-import {AddItemForm} from './AddItemForm';
-import {AppBar, IconButton, Typography, Button, Toolbar, Container, Grid, Paper} from '@material-ui/core';
+import {AppBar, IconButton, Typography, Button, Toolbar, Container, CircularProgress} from '@material-ui/core';
 import Menu from '@material-ui/icons/Add';
-import {TodoListDomainType, fetchTodolistsTC, createTodolistsTC} from "../state/todolists-reducer";
 import {AppRootStateType} from "../state/store";
 import {useSelector} from "react-redux";
-import {TaskType} from "../api/00_task-api";
-import {useAppDispatch} from "../app/hooks";
-import {LinearProgress} from '@mui/material';
 import {RequestStatusType} from "../state/app-reducer";
 import {ErrorSnackbar} from "./ErrorSnackbar/ErrorSnackbar";
-
-
-export type TasksStateType = {
-    [key: string]: Array<TaskType>
-}
+import {Routes, Route, Navigate, useNavigate} from 'react-router-dom';
+import {Login} from "../features/Login";
+import TodolistList from "./TodolistList";
+import {useAppDispatch} from "../app/hooks";
+import {initializeAppTC, logoutTC} from "../state/auth-reducer";
 
 function App() {
-    
-    const todolists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todolists)
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
     
-    const addTodolist = useCallback((title: string) => {
-        dispatch(createTodolistsTC(title))
-    }, [dispatch])
+    const onClickLogin = () => {
+        navigate("/Login")
+    }
+    const onClickLogout = () => {
+        dispatch(logoutTC())
+    }
     
     useEffect(() => {
-        dispatch(fetchTodolistsTC())
+        dispatch(initializeAppTC())
     }, [dispatch])
     
+    // крутилка пока не ясно залогинен или нет ( непроинициализирован)
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
     
     return (
         <div className="App">
-            <ErrorSnackbar />
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -44,33 +49,20 @@ function App() {
                     <Typography variant="h6">
                         Todolists
                     </Typography>
-                    <Button color="inherit" variant={"outlined"}>Login</Button>
+                    <div>
+                        {!isLoggedIn ?
+                            <Button color="inherit" variant={"outlined"} onClick={onClickLogin}>LogIn</Button>
+                            : <Button color="inherit" variant={"outlined"} onClick={onClickLogout}>LogOut</Button>}
+                    </div>
                 </Toolbar>
             </AppBar>
-            {status === "loading" && <LinearProgress/>}
-            <Container fixed={true}>
-                <Grid container
-                      style={{padding: "15px 0"}}>
-                    <AddItemForm addItem={addTodolist} disabled={false}/>
-                </Grid>
-                <Grid container spacing={3}>
-                    {todolists.map(tl => {
-                        return (
-                            <Grid item
-                                  key={tl.id}
-                            >
-                                <Paper
-                                    elevation={8}
-                                    style={{padding: "15px"}}
-                                ><Todolist
-                                    id={tl.id}
-                                    title={tl.title}
-                                    filter={tl.filter}
-                                    entityStatus={tl.entityStatus}
-                                /></Paper>
-                            </Grid>)
-                    })}
-                </Grid>
+            <Container fixed>
+                <Routes>
+                    <Route path="/" element={<TodolistList/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/404" element={<h1>page not found</h1>}/>
+                    <Route path="*" element={<Navigate to="/404"/>}/>
+                </Routes>
             </Container>
         </div>
     );

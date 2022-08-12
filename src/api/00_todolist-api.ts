@@ -1,13 +1,4 @@
-import axios from 'axios'
-
-const instance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-    withCredentials: true,
-    headers: {
-        'API-KEY': '4f6e1a9b-a442-4dac-9b05-ef297eadf4f8'
-    }
-})
-
+import { instance } from "./00_api-data"
 
 export const todolistAPI = {
     getTodolists() {
@@ -23,7 +14,6 @@ export const todolistAPI = {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title: title})
     }
 }
-
 
 // types
 export type TodolistType = { // type from server

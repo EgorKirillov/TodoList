@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 import {store} from "./state/store";
 import ReactDOM from 'react-dom/client'; // from React 18
+import {BrowserRouter} from 'react-router-dom';
 
 // from React 17
 // render(
@@ -17,16 +18,17 @@ import ReactDOM from 'react-dom/client'; // from React 18
 
 // from React 18
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-     <Provider store={store}>
-     <App />
-     </Provider>
-  </React.StrictMode>
+    // <React.StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <App/>
+            </Provider>
+        </BrowserRouter>
+    // </React.StrictMode>
 );
-
 
 
 // If you want your app to work offline and load faster, you can change

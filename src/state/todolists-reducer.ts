@@ -54,6 +54,7 @@ export const fetchTodolistsTC = (): AppThunk =>    // (dispatch: Dispatch<AppAct
                 dispatch(setTodolistAC(res.data))
                 dispatch(setAppStatusAC("succeeded"))
             }).catch(() => {
+            dispatch(setAppStatusAC("failed"))
         })
     }
 export const changeTodolistsTitleTC = (todolistId: string, title: string): AppThunk => async (dispatch: Dispatch<AppActionType>) => {

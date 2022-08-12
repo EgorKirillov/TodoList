@@ -4,6 +4,7 @@ import {applyMiddleware, combineReducers, compose, legacy_createStore as createS
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {useDispatch} from "react-redux";
 import {appReducer, AppReducerActionsType} from "./app-reducer";
+import {authReducer} from "./auth-reducer";
 
 // необходимо для работы расширения Redux
 declare global {
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
     app: appReducer,
+    auth: authReducer,
 })
 
 // непосредственно создаём store

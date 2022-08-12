@@ -1,13 +1,6 @@
-import axios from 'axios'
+import { instance } from "./00_api-data";
 import {ResponseType} from "./00_todolist-api";
 
-const instance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-    withCredentials: true,
-    headers: {
-        'API-KEY': '4f6e1a9b-a442-4dac-9b05-ef297eadf4f8'
-    }
-})
 export const taskAPI = {
     getTasks(todolistID: string) {
         return instance.get<GetTaskResponseType>(`todo-lists/${todolistID}/tasks`)
@@ -47,7 +40,7 @@ export type UpdateTaskModelType = {
     startDate: string
     deadline: string
 }
-type GetTaskResponseType = {
+export type GetTaskResponseType = {
     items: Array<TaskType>
     totalCount: number
     error: string | null

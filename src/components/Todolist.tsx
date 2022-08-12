@@ -37,7 +37,7 @@ export const Todolist = React.memo((props: PropsType) => {
     //удаление Todolist
     const removeTodolist = useCallback(() => {
         dispatch(deleteTodolistsTC(props.id))
-    }, [dispatch,props.id])
+    }, [dispatch, props.id])
     
     //изменение Titlе todolist
     const changeTodolistTitle = useCallback((title: string) => {
@@ -61,11 +61,12 @@ export const Todolist = React.memo((props: PropsType) => {
     //подгрузка Tasks с сервера
     useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    }, [dispatch, props.id])
+    }, [dispatch,props.id])
     
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-            <Button onClick={removeTodolist} disabled={props.entityStatus === "loading"}><DeleteForeverIcon fontSize={"small"}/></Button>
+            <Button onClick={removeTodolist} disabled={props.entityStatus === "loading"}><DeleteForeverIcon
+                fontSize={"small"}/></Button>
         </h3>
         <AddItemForm addItem={addTask} disabled={props.entityStatus === "loading"}/>
         <List>
