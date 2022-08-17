@@ -1,5 +1,5 @@
 import {taskAPI, TaskStatuses, TaskType, UpdateTaskModelType} from '../api/00_task-api';
-import {AddTodolistActionType} from "./todolists-reducer";
+import {AddTodolistActionType, changeTodolistEntityStatusAC} from "./todolists-reducer";
 import {AppActionType, AppRootStateType} from "./store";
 import {Dispatch} from 'redux';
 import {createUpdatedTask} from '../utils/utils';
@@ -117,6 +117,7 @@ export const removeTasksTC = (taskId: string, todolistId: string) => async (disp
 
 export const addTasksTC = (todolistID: string, title: string) => async (dispatch: Dispatch) => {
     try {
+        dispatch(changeTodolistEntityStatusAC(todolistID, "loading"))
         dispatch(setAppStatusAC("loading"))
         // make Error property of undefined, title<30
         // let trt=title[30]
@@ -144,6 +145,9 @@ export const addTasksTC = (todolistID: string, title: string) => async (dispatch
         //                 another way  typing errors
     catch (error) {
         handleServerNetworkError(error as { message: string }, dispatch)
+    }
+    finally {
+        dispatch(changeTodolistEntityStatusAC(todolistID, "idle"))
     }
     
 }
