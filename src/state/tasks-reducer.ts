@@ -9,6 +9,7 @@ import axios, {AxiosError} from 'axios';
 
 //types
 export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
+export type removeAllTasksActionType = ReturnType<typeof removeAllTasksAC>
 export type AddTaskActionType = ReturnType<typeof addTaskAC>
 export type SetTasksActionType = ReturnType<typeof setTasksAC>
 export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
@@ -16,6 +17,7 @@ export type updateTaskLoadingStatusActionType = ReturnType<typeof updateTaskLoad
 
 export type TasksActionsType =
     RemoveTaskActionType
+    | removeAllTasksActionType
     | AddTaskActionType
     | AddTodolistActionType
     | SetTasksActionType
@@ -39,6 +41,8 @@ export const tasksReducer = (state: TasksStateType = initialState, action: AppAc
     switch (action.type) {
         case  "REMOVE-TASK":
             return {...state, [action.todolistID]: state[action.todolistID].filter((t) => (t.id !== action.taskID))}
+        case  "REMOVE-ALL-TASKS":
+            return {}
         case "ADD-TASK":
             return {...state, [action.todolistID]: [action.task, ...state[action.todolistID]]}
         case 'ADD-TODOLIST':
@@ -78,6 +82,9 @@ export const tasksReducer = (state: TasksStateType = initialState, action: AppAc
 // action creators
 export const removeTaskAC = (taskID: string, todolistID: string) => {
     return {type: 'REMOVE-TASK', taskID, todolistID} as const
+}
+export const removeAllTasksAC = () => {
+    return {type: 'REMOVE-ALL-TASKS'} as const
 }
 export const addTaskAC = (task: TaskType, todolistID: string) => {
     return {type: 'ADD-TASK', task, todolistID} as const

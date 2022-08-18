@@ -4,6 +4,7 @@ import {handleServerAppError, handleServerNetworkError} from "../utils/error-uti
 import {AppThunk} from "./store";
 import { authAPI } from '../api/00_auth-api';
 import {setTodolistAC} from "./todolists-reducer";
+import {removeAllTasksAC} from "./tasks-reducer";
 
 const initialState = {
     isLoggedIn: false
@@ -46,6 +47,8 @@ export const logoutTC = () => (dispatch: Dispatch) => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC(false))
                 dispatch(setTodolistAC([]))
+                dispatch(removeAllTasksAC())
+                
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 handleServerAppError(res.data, dispatch)
