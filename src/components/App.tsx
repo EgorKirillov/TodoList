@@ -1,7 +1,5 @@
 import React, {useEffect} from 'react';
 import '../App.css';
-import {AppBar, IconButton, Typography, Button, Toolbar, Container, CircularProgress} from '@material-ui/core';
-import Menu from '@material-ui/icons/Add';
 import {AppRootStateType} from "../state/store";
 import {useSelector} from "react-redux";
 import {RequestStatusType} from "../state/app-reducer";
@@ -11,6 +9,15 @@ import {Login} from "../features/Login";
 import TodolistList from "./TodolistList";
 import {useAppDispatch} from "../app/hooks";
 import {initializeAppTC, logoutTC} from "../state/auth-reducer";
+import LinearProgress from '@mui/material/LinearProgress';
+import AppBar from '@material-ui/core/AppBar';
+import Menu from '@material-ui/icons/Add';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function App() {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
@@ -56,6 +63,7 @@ function App() {
                     </div>
                 </Toolbar>
             </AppBar>
+            { status === "loading" && <LinearProgress color="primary" />}
             <Container fixed>
                 <Routes>
                     <Route path="/" element={<TodolistList/>}/>
