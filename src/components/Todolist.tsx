@@ -22,7 +22,7 @@ type PropsType = {
     id: string
     title: string
     filter: FilterValuesType
-    entityStatus: RequestStatusType
+    todolistStatus: RequestStatusType
 }
 
 export const Todolist = React.memo((props: PropsType) => {
@@ -65,14 +65,16 @@ export const Todolist = React.memo((props: PropsType) => {
     
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-            <Button onClick={removeTodolist} disabled={props.entityStatus === "loading"}><DeleteForeverIcon
+            <Button onClick={removeTodolist} disabled={props.todolistStatus === "loading"}><DeleteForeverIcon
                 fontSize={"small"}/></Button>
         </h3>
-        <AddItemForm addItem={addTask} disabled={props.entityStatus === "loading"}/>
+        <AddItemForm addItem={addTask} disabled={props.todolistStatus === "loading"}/>
         <List>
             {tasksForTodolist.map(t => {
                 return <Task task={t}
-                             todolistID={props.id}/>
+                             todolistID={props.id}
+                             todolistStatus={props.todolistStatus}
+                />
             })
             }
         </List>

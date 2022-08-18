@@ -3,7 +3,7 @@ import {AddTodolistActionType, changeTodolistEntityStatusAC} from "./todolists-r
 import {AppActionType, AppRootStateType} from "./store";
 import {Dispatch} from 'redux';
 import {createUpdatedTask} from '../utils/utils';
-import {setAppStatusAC} from "./app-reducer";
+import {RequestStatusType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import axios, {AxiosError} from 'axios';
 
@@ -12,6 +12,7 @@ export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
 export type AddTaskActionType = ReturnType<typeof addTaskAC>
 export type SetTasksActionType = ReturnType<typeof setTasksAC>
 export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
+export type updateTaskLoadingStatusActionType = ReturnType<typeof updateTaskLoadingStatusAC>
 
 export type TasksActionsType =
     RemoveTaskActionType
@@ -19,9 +20,16 @@ export type TasksActionsType =
     | AddTodolistActionType
     | SetTasksActionType
     | UpdateTaskActionType
+    | updateTaskLoadingStatusActionType
+
+
+export type TaskDomainType = // add utils keys
+    TaskType & {
+    taskLoadingStatus?: RequestStatusType
+}
 
 type TasksStateType = {
-    [key: string]: Array<TaskType>;
+    [key: string]: Array<TaskDomainType>;
 }
 
 const initialState: TasksStateType = {} as TasksStateType
@@ -57,6 +65,11 @@ export const tasksReducer = (state: TasksStateType = initialState, action: AppAc
                 ...state, [action.todolistID]: state[action.todolistID]
                     .map(t => t.id === action.taskId ? {...t, ...action.taskModel} : t)
             }
+        case "CHANGE-TASK-LOADING-STATUS":
+            return {
+                ...state, [action.todolistID]: state[action.todolistID]
+                    .map(t => t.id === action.taskId ? {...t, taskLoadingStatus: action.taskLoadingStatus} : t)
+            }
         default:
             return state
     }
@@ -75,6 +88,10 @@ export const setTasksAC = (tasks: TaskType[], todolistID: string) => {
 export const updateTaskAC = (taskId: string, taskModel: UpdateTaskModelType, todolistID: string) => {
     return {type: 'UPDATE-TASK', taskModel, todolistID, taskId} as const
 }
+export const updateTaskLoadingStatusAC = (taskId: string, todolistID: string, taskLoadingStatus: RequestStatusType) => {
+    return {type: 'CHANGE-TASK-LOADING-STATUS', todolistID, taskId, taskLoadingStatus} as const
+}
+
 
 // thunk creators
 export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
@@ -90,6 +107,7 @@ export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) =
 }
 export const removeTasksTC = (taskId: string, todolistId: string) => async (dispatch: Dispatch) => {
     try {
+        dispatch(updateTaskLoadingStatusAC(taskId, todolistId, "loading"))
         dispatch(setAppStatusAC("loading"))
         const res = await taskAPI.deleteTask(taskId, todolistId)
         if (res.data.resultCode === 0) {
@@ -112,6 +130,8 @@ export const removeTasksTC = (taskId: string, todolistId: string) => async (disp
         // }
     catch (error) {
         handleServerNetworkError(error as { message: string }, dispatch)
+    } finally {
+        dispatch(updateTaskLoadingStatusAC(taskId, todolistId, "idle"))
     }
 }
 
@@ -145,8 +165,7 @@ export const addTasksTC = (todolistID: string, title: string) => async (dispatch
         //                 another way  typing errors
     catch (error) {
         handleServerNetworkError(error as { message: string }, dispatch)
-    }
-    finally {
+    } finally {
         dispatch(changeTodolistEntityStatusAC(todolistID, "idle"))
     }
     
@@ -161,7 +180,7 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
             //create a task using api example
             const updatedTask = createUpdatedTask(task)
             updatedTask.status = status
-            
+            dispatch(updateTaskLoadingStatusAC(taskId, todolistId, "loading"))
             dispatch(setAppStatusAC("loading"))
             taskAPI.updateTask(todolistId, taskId, updatedTask).then((res) => {
                 if (res.data.resultCode === 0) {
@@ -180,6 +199,8 @@ export const updateTaskStatusTC = (taskId: string, todolistId: string, status: T
                 } else {
                     handleServerNetworkError(err as Error, dispatch)
                 }
+            }).finally(() => {
+                dispatch(updateTaskLoadingStatusAC(taskId, todolistId, "idle"))
             })
         }
     }

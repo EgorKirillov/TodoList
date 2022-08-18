@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import {useAppDispatch} from "../app/hooks";
 import {TaskType} from "../api/00_task-api";
 import {useNavigate} from "react-router-dom";
+import {RequestStatusType} from "../state/app-reducer";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -17,6 +18,7 @@ export type TasksStateType = {
 function TodolistList() {
     
     const todolists = useSelector<AppRootStateType, Array<TodoListDomainType>>(state => state.todolists)
+    const appLoadingStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
@@ -39,8 +41,9 @@ function TodolistList() {
             <Container fixed={true}>
                 <Grid container
                       style={{padding: "15px 0"}}>
-                    <AddItemForm addItem={addTodolist} disabled={false}/>
+                    <AddItemForm addItem={addTodolist} disabled={appLoadingStatus === "loading"}/>
                 </Grid>
+                {todolists.length === 0 && <span>todolists is empty, create todolist</span>}
                 <Grid container spacing={3}>
                     {todolists.map(tl => {
                         return (
@@ -55,7 +58,7 @@ function TodolistList() {
                                     id={tl.id}
                                     title={tl.title}
                                     filter={tl.filter}
-                                    entityStatus={tl.entityStatus}
+                                    todolistStatus={tl.todolistStatus}
                                 /></Paper>
                             </Grid>)
                     })}
