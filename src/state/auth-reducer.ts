@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux'
-import {AppReducerActionsType, setAppStatusAC, setIsInitializedAC} from "./app-reducer";
+import { setAppStatusAC, setIsInitializedAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {AppThunk} from "./store";
+// import {AppThunk} from "./store";
 import { authAPI } from '../api/00_auth-api';
 import {setTodolistAC} from "./todolists-reducer";
 import {removeAllTasksAC} from "./tasks-reducer";
@@ -25,13 +25,13 @@ export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
 // thunks
-export const loginTC = (email: string, password: string, rememberMe: boolean, captcha: boolean): AppThunk => async (dispatch: Dispatch<ActionsType>) => {
+export const loginTC = (email: string, password: string, rememberMe: boolean, captcha: boolean) => async (dispatch: Dispatch) => {
     try {
-        dispatch(setAppStatusAC("loading"))
+        dispatch(setAppStatusAC({status:"loading"}))
         const res = await authAPI.login(email, password, rememberMe, captcha)
         if (res.data.resultCode === 0) {
             dispatch(setIsLoggedInAC(true))
-            dispatch(setAppStatusAC("succeeded"))
+            dispatch(setAppStatusAC({status:"succeeded"}))
         } else {
             handleServerAppError(res.data, dispatch)
         }
@@ -41,7 +41,7 @@ export const loginTC = (email: string, password: string, rememberMe: boolean, ca
 }
 
 export const logoutTC = () => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC({status:'loading'}))
     authAPI.logout()
         .then(res => {
             if (res.data.resultCode === 0) {
@@ -49,7 +49,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
                 dispatch(setTodolistAC([]))
                 dispatch(removeAllTasksAC())
                 
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status:'succeeded'}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -72,7 +72,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
     }).catch((err)=>{
         console.log(err)
     }).finally(()=>{
-        dispatch(setIsInitializedAC(true));
+        dispatch(setIsInitializedAC({isInitialized:true}));
         //dispatch(setAppStatusAC("idle"))
         
     })
@@ -82,4 +82,4 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
 
 
 // types
-type ActionsType = ReturnType<typeof setIsLoggedInAC> | AppReducerActionsType
+type ActionsType = ReturnType<typeof setIsLoggedInAC>
