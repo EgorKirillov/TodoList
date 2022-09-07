@@ -1,7 +1,6 @@
 import {Dispatch} from 'redux'
 import {setAppStatusAC, setIsInitializedAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-// import {AppThunk} from "./store";
 import {authAPI} from '../api/00_auth-api';
 import {setTodolistAC} from "./todolists-reducer";
 import {removeAllTasksAC} from "./tasks-reducer";
@@ -10,6 +9,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const initialState = {
   isLoggedIn: false
 }
+
 const slice = createSlice({
   name: 'auth',
   initialState: initialState,
@@ -59,7 +59,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
     .then(res => {
       if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC({value: false}))
-        dispatch(setTodolistAC([]))
+        dispatch(setTodolistAC({todolists:[]}))
         dispatch(removeAllTasksAC({}))
 
         dispatch(setAppStatusAC({status: 'succeeded'}))

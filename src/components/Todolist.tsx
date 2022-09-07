@@ -14,7 +14,7 @@ import {
 import {addTasksTC, fetchTasksTC} from "../state/tasks-reducer";
 import {useAppDispatch} from "../app/hooks";
 import {useSelector} from "react-redux";
-import {AppRootStateType} from "../state/store";
+import {AppRootStateType, useAppSelector} from "../state/store";
 import {RequestStatusType} from "../state/app-reducer";
 
 
@@ -26,7 +26,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-    const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[props.id])
+    const tasks = useAppSelector(state => state.tasks[props.id])
     const dispatch = useAppDispatch()
     
     //добавление новой Task
@@ -46,7 +46,7 @@ export const Todolist = React.memo((props: PropsType) => {
     
     //изменение фильтра todolist
     const changeFilter = useCallback((value: FilterValuesType) => {
-        dispatch(changeTodolistFilterAC(props.id, value))
+        dispatch(changeTodolistFilterAC({todolistId:props.id, filter:value}))
     }, [dispatch, props.id])
     
     // применение фильтра к Tasks
