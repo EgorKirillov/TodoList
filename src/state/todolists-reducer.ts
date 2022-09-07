@@ -9,8 +9,10 @@ const initialState: Array<TodoListDomainType> = []
 // reducer
 export const todolistsReducer = (state: Array<TodoListDomainType> = initialState, action:TodolistsActionsType): Array<TodoListDomainType> => {
     switch (action.type) {
-        case 'SET-TODOLISTS': // add field "filter" to all todolist from server and entityStatus: "idle" TodolistType -> TodoListDomainType
+        case 'SET-TODOLISTS': { // add field "filter" to all todolist from server and entityStatus: "idle" TodolistType -> TodoListDomainType
+            console.log(action)
             return action.todolists.map(td => ({...td, filter: "all", todolistStatus: "idle"}))
+        }
         case 'REMOVE-TODOLIST':
             return state.filter(tl => tl.id !== action.id)
         case 'ADD-TODOLIST':

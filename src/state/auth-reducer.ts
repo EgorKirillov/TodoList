@@ -60,7 +60,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC({value: false}))
         dispatch(setTodolistAC([]))
-        dispatch(removeAllTasksAC())
+        dispatch(removeAllTasksAC({}))
 
         dispatch(setAppStatusAC({status: 'succeeded'}))
       } else {
