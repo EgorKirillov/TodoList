@@ -18,7 +18,7 @@ export const Task = memo(({task, todolistID, todolistStatus}: TaskPropsType) => 
     const dispatch = useAppDispatch()
     
     //удаление Task
-    const onClickHandler = () => dispatch(removeTasksTC(task.id, todolistID))
+    const onClickHandler = () => dispatch(removeTasksTC({taskId:task.id, todolistId:todolistID}))
     
     //изменение status
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {

@@ -13,8 +13,7 @@ import {
 } from "../state/todolists-reducer";
 import {addTasksTC, fetchTasksTC} from "../state/tasks-reducer";
 import {useAppDispatch} from "../app/hooks";
-import {useSelector} from "react-redux";
-import {AppRootStateType, useAppSelector} from "../state/store";
+import {useAppSelector} from "../state/store";
 import {RequestStatusType} from "../state/app-reducer";
 
 
@@ -26,9 +25,9 @@ type PropsType = {
 }
 
 export const Todolist = React.memo((props: PropsType) => {
-    const tasks = useAppSelector(state => state.tasks[props.id])
+    const tasks:TaskType[] = useAppSelector(state => state.tasks[props.id as keyof typeof state.tasks])
     const dispatch = useAppDispatch()
-    
+    console.log(tasks)
     //добавление новой Task
     const addTask = useCallback((title: string) => {
         dispatch(addTasksTC(props.id, title))
