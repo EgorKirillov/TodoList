@@ -12,14 +12,13 @@ const initialState = {
 
 const slice = createSlice({
   name: 'auth',
-  initialState: initialState,
+  initialState: {isLoggedIn: false},
   reducers: {
     setIsLoggedInAC(state, action: PayloadAction<{ value: boolean }>) {
       state.isLoggedIn = action.payload.value
     }
   }
 })
-
 
 
 export const {setIsLoggedInAC} = slice.actions
@@ -38,10 +37,10 @@ export const authReducer = slice.reducer
 //     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
 // thunks
-export const loginTC = (email: string, password: string, rememberMe: boolean, captcha: boolean) => async (dispatch: Dispatch) => {
+export const loginTC = (loginData: LoginDataType) => async (dispatch: Dispatch) => {
   try {
     dispatch(setAppStatusAC({status: "loading"}))
-    const res = await authAPI.login(email, password, rememberMe, captcha)
+    const res = await authAPI.login(loginData)
     if (res.data.resultCode === 0) {
       dispatch(setIsLoggedInAC({value: true}))
       dispatch(setAppStatusAC({status: "succeeded"}))
@@ -59,9 +58,9 @@ export const logoutTC = () => (dispatch: Dispatch) => {
     .then(res => {
       if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC({value: false}))
-        dispatch(setTodolistAC({todolists:[]}))
+        dispatch(setTodolistAC({todolists: []}))
         dispatch(removeAllTasksAC({}))
-
+        
         dispatch(setAppStatusAC({status: 'succeeded'}))
       } else {
         handleServerAppError(res.data, dispatch)
@@ -73,25 +72,31 @@ export const logoutTC = () => (dispatch: Dispatch) => {
 }
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
-
+  
   authAPI.me().then(res => {
     //dispatch(setAppStatusAC("loading"))
     if (res.data.resultCode === 0) {
       dispatch(setIsLoggedInAC({value: true}));
-
+      
     } else {
-
+    
     }
   }).catch((err) => {
     console.log(err)
   }).finally(() => {
     dispatch(setIsInitializedAC({isInitialized: true}));
     //dispatch(setAppStatusAC("idle"))
-
+    
   })
-
+  
 }
 
 
 // types
 //type ActionsType = ReturnType<typeof setIsLoggedInAC>
+export type LoginDataType = {
+  email: string
+  password: string
+  rememberMe: boolean
+  captcha: boolean
+}

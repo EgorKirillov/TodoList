@@ -46,7 +46,7 @@ export const Login = () => {
         },
         onSubmit: values => {
             formik.resetForm(); // сбрасывает значения на инициализационные
-            dispatch(loginTC(values.email, values.password, values.rememberMe, true))
+            dispatch(loginTC({email:values.email, password: values.password, rememberMe: values.rememberMe, captcha:true}))
         },
     })
     
