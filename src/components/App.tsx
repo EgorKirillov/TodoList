@@ -66,7 +66,6 @@ function App() {
             { status === "loading" && <LinearProgress color="primary" />}
             <Container fixed>
                 <Routes>
-                    <Route path="/TodolistList" element={<TodolistList/>}/>
                     <Route path="/" element={<TodolistList/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/404" element={<h1>page not found</h1>}/>
