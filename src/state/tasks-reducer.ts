@@ -73,7 +73,10 @@ const slice = createSlice({
       state[action.payload.todolistID] = action.payload.tasks
     },
     updateTaskAC(state, action: PayloadAction<{ taskId: string, taskModel: UpdateTaskModelType, todolistID: string }>) {
-      state[action.payload.todolistID].forEach(t => t.id === action.payload.taskId ? {...t, ...action.payload.taskModel} : t)
+      const index = state[action.payload.todolistID].findIndex(t => t.id === action.payload.taskId)
+      state[action.payload.todolistID][index] = {...state[action.payload.todolistID][index], ...action.payload.taskModel}
+      // forEach не сработал
+      // state[action.payload.todolistID].forEach(t => t.id === action.payload.taskId ? {...t, ...action.payload.taskModel} : t)
     },
     updateTaskLoadingStatusAC(state, action: PayloadAction<{ taskId: string, todolistID: string, taskLoadingStatus: RequestStatusType }>) {
       state[action.payload.todolistID]
