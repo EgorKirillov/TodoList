@@ -11,9 +11,8 @@ import {FormikHelpers, useFormik} from 'formik';
 import {useAppDispatch} from "../app/hooks";
 import {loginTC} from "../state/auth-reducer";
 import {useSelector} from "react-redux";
-import {AppDispatchType, AppRootStateType} from "../state/store";
+import {AppRootStateType} from "../state/store";
 import {Navigate} from 'react-router-dom';
-import {errors} from "puppeteer";
 
 type FormikValuesType = {
   email: string
@@ -22,7 +21,7 @@ type FormikValuesType = {
 }
 
 export const Login = () => {
-  const dispatch: AppDispatchType = useAppDispatch()
+  const dispatch = useAppDispatch()
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
   
   const formik = useFormik({
@@ -53,17 +52,9 @@ export const Login = () => {
         rememberMe: values.rememberMe,
         captcha: true
       }))
-      console.log(loginTC.rejected.type) // auth/login/rejected
-      console.log(action.type)// auth/login/rejected или auth/login/fulfilled
-      
-      if (action.type === loginTC.rejected.type) {
-      // if (loginTC.rejected.type.match(action.type)) {
-        if (action.payload) {
-          console.log(action.payload.fieldsErrors)
-          // if (action.payload.fieldsErrors) {
-          //   console.log('попал')
-          //   // formikHelpers.setFieldError(action.payload.fieldsErrors[0].field, action.payload.fieldsErrors[0].error)
-          // }
+      if (loginTC.rejected.match(action)) {
+        if (action.payload && action.payload.fieldsErrors) {
+          formikHelpers.setFieldError(action.payload.fieldsErrors[0].field, action.payload.fieldsErrors[0].error)
         }
       }
       
