@@ -16,7 +16,7 @@ export const loginTC = createAsyncThunk<{}, LoginDataType, { rejectValue: { erro
       const res = await authAPI.login(loginData)
       if (res.data.resultCode === 0) {
         thunkApi.dispatch(setAppStatusAC({status: "succeeded"}))
-        return ;
+        return;
       } else {
         handleServerAppError(res.data, thunkApi.dispatch)
         return thunkApi.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})
@@ -54,6 +54,22 @@ export const logoutTC = createAsyncThunk(
 )
 
 
+export const initializeAppTC = createAsyncThunk(
+  'auth/me',
+  async (undefined, {dispatch}) => {
+    try {
+      const res = await authAPI.me()
+      if (res.data.resultCode === 0) return;
+    } catch (err) {
+      const error: AxiosError = err as AxiosError
+      handleServerNetworkError(error, dispatch)
+    } finally {
+      dispatch(setIsInitializedAC({isInitialized: true}));
+    }
+  }
+)
+
+
 const slice = createSlice({
   name: 'auth',
   initialState: {isLoggedIn: false},
@@ -64,10 +80,13 @@ const slice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(loginTC.fulfilled, (state) => {
-        state.isLoggedIn = true
-      })
+      state.isLoggedIn = true
+    })
     builder.addCase(logoutTC.fulfilled, (state) => {
       state.isLoggedIn = false
+    })
+    builder.addCase(initializeAppTC.fulfilled, (state) => {
+      state.isLoggedIn = true
     })
   }
   
@@ -92,7 +111,7 @@ export const authReducer = slice.reducer
 // thunks
 
 
-export const initializeAppTC = () => (dispatch: Dispatch) => {
+export const _initializeAppTC = () => (dispatch: Dispatch) => {
   
   authAPI.me().then(res => {
     //dispatch(setAppStatusAC("loading"))
