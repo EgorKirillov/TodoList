@@ -48,12 +48,12 @@ export type AppRootStateType = ReturnType<typeof store.getState> // после �
 // export type AppActionType = TodolistsActionsType | TasksActionsType | AppReducerActionsType
 
 // export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionType>;
-export type AppDispatch = typeof store.dispatch
+export type AppDispatchType = typeof store.dispatch
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
 
 
 
-export const useAppDispatch: () => AppDispatch = useDispatch
+
 
 // типизация Thunk Action для всего объекта
 //  export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionType>;

@@ -22,8 +22,12 @@ export type TodolistType = { // type from server
     order: number // для возможности перетаскивания
     title: string
 }
+
+export type FieldErrorType ={ field: string; error: string }
+
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
+    fieldsErrors?: Array<FieldErrorType>
     data: D
 }
