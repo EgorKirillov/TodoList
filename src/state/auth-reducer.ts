@@ -37,7 +37,7 @@ export const logoutTC = createAsyncThunk(
       const res = await authAPI.logout()
       if (res.data.resultCode === 0) {
         thunkAPI.dispatch(setTodolistAC({todolists: []}))
-        thunkAPI.dispatch(removeAllTasksAC({}))
+        thunkAPI.dispatch(removeAllTasksAC())
         thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
         return {}
         
