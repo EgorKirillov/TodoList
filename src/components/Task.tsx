@@ -23,7 +23,7 @@ export const Task = memo(({task, todolistID, todolistStatus}: TaskPropsType) => 
     //изменение status
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newStatus = e.currentTarget.checked ? TaskStatuses.Complited : TaskStatuses.New;
-        dispatch(updateTaskStatusTC(task.id, todolistID, newStatus));
+        dispatch(updateTaskStatusTC({taskId:task.id, status:newStatus,todolistId:todolistID}));
     }
     
     //изменение Title
