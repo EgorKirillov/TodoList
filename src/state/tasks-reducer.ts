@@ -136,7 +136,6 @@ const slice = createSlice({
 export const tasksReducer = slice.reducer
 export const {
   removeAllTasksAC,
-  // setTasksAC,
   updateTaskAC,
   updateTaskLoadingStatusAC
 } = slice.actions
