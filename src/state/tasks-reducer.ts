@@ -219,7 +219,6 @@ const slice = createSlice({
   },
 })
 
-
 //reducer
 export const tasksReducer = slice.reducer
 export const {removeAllTasksAC, updateTaskLoadingStatusAC} = slice.actions
@@ -233,5 +232,3 @@ export type TaskDomainType = // add utils keys
 type TasksStateType = {
   [key: string]: Array<TaskDomainType>;
 }
-
-
