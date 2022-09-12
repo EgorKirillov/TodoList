@@ -7,7 +7,7 @@ type EditableSpanPropsType = {
     disableEditMode?:boolean
 }
 
-export function EditableSpan({value,onChange,disableEditMode=false}: EditableSpanPropsType) {
+export const EditableSpan = ({value,onChange,disableEditMode=false}: EditableSpanPropsType) => {
     let [editMode, setEditMode] = useState(false);
     let [title, setTitle] = useState(value);
     

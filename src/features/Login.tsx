@@ -1,18 +1,18 @@
 import React from 'react'
+
+import {Navigate} from 'react-router-dom';
+import {FormikHelpers, useFormik} from 'formik';
+import {useAppDispatch, useAppSelector} from "../app/hooks";
+import {loginTC} from "../state/auth-reducer";
+
 import Grid from '@mui/material/Grid';
-import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import {FormikHelpers, useFormik} from 'formik';
-import {useAppDispatch} from "../app/hooks";
-import {loginTC} from "../state/auth-reducer";
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "../state/store";
-import {Navigate} from 'react-router-dom';
 
 type FormikValuesType = {
   email: string
@@ -21,8 +21,8 @@ type FormikValuesType = {
 }
 
 export const Login = () => {
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const dispatch = useAppDispatch()
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
   
   const formik = useFormik({
     initialValues: {
@@ -57,7 +57,6 @@ export const Login = () => {
           formikHelpers.setFieldError(action.payload.fieldsErrors[0].field, action.payload.fieldsErrors[0].error)
         }
       }
-      
     },
   })
   
@@ -72,39 +71,34 @@ export const Login = () => {
           <FormLabel>
             <p>To log in get registered
               <a href={'https://social-network.samuraijs.com/'}
-                 target={'_blank'}> here
-              </a>
+                 target={'_blank'} rel="noreferrer"> here </a>
             </p>
             <p>or use common test account credentials:</p>
             <p>Email: free@samuraijs.com</p>
             <p>Password: free</p>
           </FormLabel>
+          
           <FormGroup>
             <TextField label="Email" margin="normal"
                        {...formik.getFieldProps('email')}
-              // заменяет следующие поля:
-              
-              // name={"email"}
-              // onChange={formik.handleChange}
-              // value={formik.values.email}
-              // onBlur={formik.handleBlur}
+              // заменяет следующие поля: name={"email"};  onChange={formik.handleChange}; value={formik.values.email}; onBlur={formik.handleBlur}
             />
-            {formik.errors.email && formik.touched.email ?
-              <div style={{color: "red"}}>{formik.errors.email}</div> : null}
+            {formik.errors.email && formik.touched.email && <div style={{color: "red"}}>{formik.errors.email}</div>}
             <TextField type="password" label="Password"
                        margin="normal"
                        {...formik.getFieldProps('password')}
-            
             />
             {formik.errors.password && formik.touched.password ?
               <div style={{color: "red"}}>{formik.errors.password}</div> : null}
+            
             <FormControlLabel label={'Remember me'}
                               control={<Checkbox {...formik.getFieldProps('rememberMe')} />}
             />
-            <Button type={'submit'} variant={'contained'} color={'primary'}>
-              Login
-            </Button>
+            
+            <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
+            
           </FormGroup>
+          
         </FormControl>
       </form>
     </Grid>
