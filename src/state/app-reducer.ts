@@ -1,15 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const initialState = {
-  status: 'idle' as RequestStatusType,
-  error: null as TextErrorType,
-  isInitialized: false
-}
-
 const slice = createSlice({
 
   name: 'auth',
-  initialState: initialState,
+  initialState: {
+    status: 'idle' as RequestStatusType,
+    error: null as TextErrorType,
+    isInitialized: false
+  },
   reducers: {
     setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
       state.status = action.payload.status

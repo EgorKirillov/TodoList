@@ -9,15 +9,16 @@ import {TodolistType} from "../api/00_todolist-api";
 
 
 export const fetchTasksTC = createAsyncThunk('task/fetchTasksTC',
-  async (todolistId: string, thunkAPI) => {
+  async (todolistId: string, {dispatch,rejectWithValue}) => {
     try {
-      thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
+      dispatch(setAppStatusAC({status: "loading"}))
       const res = await taskAPI.getTasks(todolistId)
       const tasks: TaskType[] = res.data.items
-      thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+      dispatch(setAppStatusAC({status: "succeeded"}))
       return {tasks, todolistID: todolistId}
     } catch (error) {
-      handleServerNetworkError(error as { message: string }, thunkAPI.dispatch)
+      handleServerNetworkError(error as { message: string }, dispatch)
+      return rejectWithValue(null)
     }
   })
 
