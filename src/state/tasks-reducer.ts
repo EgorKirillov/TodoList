@@ -1,9 +1,7 @@
 import {taskAPI, TaskStatuses, TaskType} from '../api/00_task-api';
 import {
-  
   changeTodolistEntityStatusAC,
-  createTodolistsTC,
-  removeTodolistAC,
+  createTodolistsTC, deleteTodolistsTC,
   setTodolistAC,
 } from "./todolists-reducer";
 import {createUpdatedTask} from '../utils/utils';
@@ -169,7 +167,7 @@ const slice = createSlice({
       .addCase(createTodolistsTC.fulfilled, (state: TasksStateType, action: PayloadAction<{ todolist: TodolistType }>) => {
         state[action.payload.todolist.id] = []
       })
-      .addCase(removeTodolistAC.type, (state: TasksStateType, action: PayloadAction<{ todolistId: string }>) => {
+      .addCase(deleteTodolistsTC.fulfilled, (state: TasksStateType, action: PayloadAction<{ todolistId: string }>) => {
         delete state[action.payload.todolistId]
       })
   },
