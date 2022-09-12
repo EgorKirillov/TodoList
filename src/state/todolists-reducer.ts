@@ -1,6 +1,5 @@
 import {todolistAPI, TodolistType} from "../api/00_todolist-api";
 import {Dispatch} from "redux";
-// import {AppActionType, AppThunk} from "./store";
 import {RequestStatusType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -114,13 +113,6 @@ export const deleteTodolistsTC = (todolistId: string) => async (dispatch: Dispat
 
 // types
 
-// export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
-// export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
-// export type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitleAC>
-// export type ChangeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC>
-// export type SetTodolistActionType = ReturnType<typeof setTodolistAC>
-// export type ChangeTodolistEntityStatusType = ReturnType<typeof changeTodolistEntityStatusAC>
-//
 export type FilterValuesType = "all" | "active" | "completed";
 //
 // export type TodolistsActionsType =

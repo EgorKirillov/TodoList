@@ -48,8 +48,8 @@ export const removeTasksTC = createAsyncThunk('task/removeTasksTC',
     }
   })
 
-export const addTasksTC = createAsyncThunk<{ task: TaskType, todolistID: string } | undefined, { todolistID: string, title: string }>(
-  'task/addTask', async (args, {dispatch}) => {
+export const addTasksTC = createAsyncThunk(
+  'task/addTask', async (args:{ todolistID: string, title: string }, {dispatch,  rejectWithValue}) => {
     try {
       dispatch(changeTodolistEntityStatusAC({todolistId: args.todolistID, todolistStatus: "loading"}))
       dispatch(setAppStatusAC({status: "loading"}))
@@ -59,9 +59,11 @@ export const addTasksTC = createAsyncThunk<{ task: TaskType, todolistID: string 
         return {task: res.data.data.item, todolistID: args.todolistID}
       } else {
         handleServerAppError(res.data, dispatch)
+        return rejectWithValue(null)
       }
     } catch (error) {
       handleServerNetworkError(error as { message: string }, dispatch)
+      return rejectWithValue(null)
     } finally {
       dispatch(changeTodolistEntityStatusAC({todolistId: args.todolistID, todolistStatus: "idle"}))
     }
@@ -187,7 +189,7 @@ const slice = createSlice({
         }
       })
       .addCase(addTasksTC.fulfilled, (state: TasksStateType, action) => {
-        if (action.payload) state[action.payload.todolistID].unshift(action.payload.task)
+        state[action.payload.todolistID].unshift(action.payload.task)
       })
       .addCase(setTodolistAC.type, (state: TasksStateType, action: PayloadAction<{ todolists: TodolistType[] }>) => {
         action.payload.todolists.forEach(td => {
