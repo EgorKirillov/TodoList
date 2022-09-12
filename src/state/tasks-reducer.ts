@@ -23,25 +23,29 @@ export const fetchTasksTC = createAsyncThunk('task/fetchTasksTC',
   })
 
 export const removeTasksTC = createAsyncThunk('task/removeTasksTC',
-  async (param: { taskId: string, todolistId: string }, thunkAPI) => {
+  async (param: { taskId: string, todolistId: string }, {dispatch, rejectWithValue}) => {
     try {
-      thunkAPI.dispatch(updateTaskLoadingStatusAC({
+      dispatch(updateTaskLoadingStatusAC({
         taskId: param.taskId,
         todolistID: param.todolistId,
         taskLoadingStatus: 'loading'
       }))
-      thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
+      dispatch(setAppStatusAC({status: "loading"}))
+
       const res = await taskAPI.deleteTask(param.taskId, param.todolistId)
       if (res.data.resultCode === 0) {
-        thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+        dispatch(setAppStatusAC({status: "succeeded"}))
         return {taskID: param.taskId, todolistID: param.todolistId}
       } else {
-        handleServerAppError(res.data, thunkAPI.dispatch)
+        handleServerAppError(res.data, dispatch)
+        return rejectWithValue(null)
       }
+    
     } catch (error) {
-      handleServerNetworkError(error as { message: string }, thunkAPI.dispatch)
+      handleServerNetworkError(error as { message: string }, dispatch)
+      return rejectWithValue(null)
     } finally {
-      thunkAPI.dispatch(updateTaskLoadingStatusAC({
+      dispatch(updateTaskLoadingStatusAC({
         taskId: param.taskId,
         todolistID: param.todolistId,
         taskLoadingStatus: "idle"
@@ -176,18 +180,13 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasksTC.fulfilled, (state: TasksStateType, action) => {
-        if (!!action.payload && !!state[action.payload.todolistID]) {
+        // if (!!action.payload && !!state[action.payload.todolistID]) {
           state[action.payload.todolistID] = action.payload.tasks
-        }
+        // }
       })
       .addCase(removeTasksTC.fulfilled, (state: TasksStateType, action) => {
-        if (!!action) {
-          if (!!action.payload) {
             const index = state[action.payload.todolistID].findIndex(t => t.id === (!!action.payload ? action.payload.taskID : ''))
             if (index > -1) state[action.payload.todolistID].splice(index, 1)
-            // state[action.payload.todolistID] = state[action.payload.todolistID].filter((t) => (t.id !== action.payload.taskID))
-          }
-        }
       })
       .addCase(addTasksTC.fulfilled, (state: TasksStateType, action) => {
         state[action.payload.todolistID].unshift(action.payload.task)
