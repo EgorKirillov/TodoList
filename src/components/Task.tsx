@@ -2,7 +2,7 @@ import React, {ChangeEvent, memo} from 'react';
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import {removeTasksTC, TaskDomainType, updateTaskStatusTC, updateTaskTitleTC} from "../state/tasks-reducer";
+import {removeTasksTC, TaskDomainType, updateTaskTC} from "../state/tasks-reducer";
 import {TaskStatuses} from "../api/00_task-api";
 import {useAppDispatch} from "../app/hooks";
 import {RequestStatusType} from "../state/app-reducer";
@@ -23,12 +23,12 @@ export const Task = memo(({task, todolistID, todolistStatus}: TaskPropsType) => 
   //изменение status
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let newStatus = e.currentTarget.checked ? TaskStatuses.Complited : TaskStatuses.New;
-    dispatch(updateTaskStatusTC({taskId: task.id, status: newStatus, todolistId: todolistID}));
+    dispatch(updateTaskTC({taskId: task.id, model: {status: newStatus}, todolistId: todolistID}));
   }
   
   //изменение Title
   const onTitleChangeHandler = (newTitle: string) => {
-    dispatch(updateTaskTitleTC({taskId: task.id, title: newTitle, todolistId: todolistID}));
+    dispatch(updateTaskTC({taskId: task.id, model: {title: newTitle}, todolistId: todolistID}));
   }
   
   //при loading тудулиста или таски disable button and EditableSpan

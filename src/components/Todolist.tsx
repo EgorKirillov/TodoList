@@ -27,7 +27,6 @@ type PropsType = {
 export const Todolist = React.memo((props: PropsType) => {
     const tasks:TaskType[] = useAppSelector(state => state.tasks[props.id as keyof typeof state.tasks])
     const dispatch = useAppDispatch()
-    console.log(tasks)
     //добавление новой Task
     const addTask = useCallback((title: string) => {
         dispatch(addTasksTC({todolistID:props.id, title}))
