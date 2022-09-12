@@ -45,7 +45,7 @@ function TodolistList() {
                 </Grid>
                 {todolists.length === 0 && <span>todolists is empty, create todolist</span>}
                 <Grid container spacing={3}>
-                    {todolists.map(tl => {
+                    {todolists?.map(tl => {
                         return (
                             <Grid item
                                   key={tl.id}
