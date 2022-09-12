@@ -1,5 +1,11 @@
 import {taskAPI, TaskStatuses, TaskType} from '../api/00_task-api';
-import {addTodolistAC, changeTodolistEntityStatusAC, removeTodolistAC, setTodolistAC,} from "./todolists-reducer";
+import {
+  
+  changeTodolistEntityStatusAC,
+  createTodolistsTC,
+  removeTodolistAC,
+  setTodolistAC,
+} from "./todolists-reducer";
 import {createUpdatedTask} from '../utils/utils';
 import {RequestStatusType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
@@ -160,7 +166,7 @@ const slice = createSlice({
           state[td.id] = []
         })
       })
-      .addCase(addTodolistAC.type, (state: TasksStateType, action: PayloadAction<{ todolist: TodolistType }>) => {
+      .addCase(createTodolistsTC.fulfilled, (state: TasksStateType, action: PayloadAction<{ todolist: TodolistType }>) => {
         state[action.payload.todolist.id] = []
       })
       .addCase(removeTodolistAC.type, (state: TasksStateType, action: PayloadAction<{ todolistId: string }>) => {
