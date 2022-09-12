@@ -1,6 +1,6 @@
-import {TaskType, UpdateTaskModelType} from "../api/00_task-api";
+import {TaskStatuses, TaskType, UpdateTaskModelType} from "../api/00_task-api";
 
-export const createUpdatedTask = (task: TaskType): UpdateTaskModelType => {
+export const createUpdatedTask = (task: TaskType, model?:{title?: string; status?: TaskStatuses}): UpdateTaskModelType => {
     return {
         title: task.title,
         description: task.description,
@@ -8,5 +8,6 @@ export const createUpdatedTask = (task: TaskType): UpdateTaskModelType => {
         priority: task.priority,
         startDate: task.startDate,
         deadline: task.deadline,
+        ...model
     }
 }
