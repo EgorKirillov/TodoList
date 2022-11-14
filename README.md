@@ -1,46 +1,68 @@
-# Getting Started with Create React App
+#Классический TODOlist 
+##применяемые библиотеки и технологии:
+- Typescript
+- React
+- Redux
+- Redux-thunk
+- Redux-toolkit
+- React-router-dom_v6
+- Formik
+- MaterialUI
+- RestAPI (axios)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+##возможности: 
 
-## Available Scripts
+###авторизация
+- логинизация с валидацией полей
+- вылогинизация 
+- тестовый аккаунт для проверки
 
-In the project directory, you can run:
+###полный список CRUD операция над тудулистами
+###чтение спикска тудулистов, информирование об их отсутствии 
+- индикатор инициализации приложения
+- индикатор загрузки
 
-### `yarn start`
+###создание нового тудулиста
+- блокировка повторного запроса на создание тудулиста
+- валидация на пустую строку и максимальное количество символов в имени
+- валидация на максимальное количество тудулистов (10)
+- индикатор загрузки
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+###удаление тудулиста
+- автоматическое удаление тасок
+- блокировка изменения имени таски и ручного удаления
+- индикатор загрузки
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+###изменение имени тудулиста
+- активация по двойному нажатию, завершение на Enter или потерю фокуса
+- валидация по пустому имени и макимальной длине
+- блокировка взаимодействия с тасками этого тудулиста
+- индикатор загрузки 
 
-### `yarn test`
+###полный список CRUD операция над тасками
+###чтение списков тасок для всех тудулистов
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+###создание новоой таски
+- блокировка повторного запроса на создание таски
+- блокировка возможности удалить тудулист 
+- валидация на пустую строку и максимальное количество символов в имени
+- валидация на максимальное количество тудулистов (10)
+- индикатор загрузки
 
-### `yarn build`
+###удаление таски
+- блокировка изменения имени таски и ручного удаления
+- индикатор загрузки
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+###изменение имени таски
+- активация по двойному нажатию, завершение на Enter или потерю фокуса
+- валидация по пустому имени и макимальной длине
+- блокировка взаимодействия с изменяемой таской
+- индикатор загрузки 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+###изменение статуса таски
+- блокировка взаимодействия с изменяемой таской
+- индикатор загрузки
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+###фильтрация тасок по статусу
+- моментальная работа, реализация на клиентской части
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

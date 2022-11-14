@@ -9,14 +9,7 @@ import {store} from "./state/store";
 import ReactDOM from 'react-dom/client'; // from React 18
 import {BrowserRouter} from 'react-router-dom';
 
-// from React 17
-// render(
-//   <Provider store={store}>
-//      <App/>
-//   </Provider>,  document.getElementById('root'));
-
-
-// from React 18
+// React 18
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
